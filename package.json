@@ -1,0 +1,22 @@
+{
+  "name": "profileapp-ui",
+  "version": "1.0.0",
+  "description": "Profileapp UI",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/batabyalsunny/profileapp-ui.git"
+  },
+  "author": "Sunny Batabyal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/batabyalsunny/profileapp-ui/issues"
+  },
+  "homepage": "https://github.com/batabyalsunny/profileapp-ui#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
