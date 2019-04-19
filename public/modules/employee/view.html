@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Collapsible sidebar using Bootstrap 4</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/node_modules/datatables/media/css/jquery.dataTables.min.css   ">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="/assets/styles/main.css">
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Bootstrap Sidebar</h3>
+                <strong>BS</strong>
+            </div>
+    
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="#employeeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-user"></i>
+                        Employee
+                    </a>
+                    <ul class="collapse list-unstyled" id="employeeSubmenu">
+                        <li>
+                            <a href="/employees/add">Add</a>
+                        </li>
+                        <li>
+                            <a href="/employees">View</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#companySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-bank"></i>
+                        Company
+                    </a>
+                    <ul class="collapse list-unstyled" id="companySubmenu">
+                        <li>
+                            <a href="/companies/add">Add</a>
+                        </li>
+                        <li>
+                            <a href="/companies">View</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#designationSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-tasks"></i>
+                        Designation
+                    </a>
+                    <ul class="collapse list-unstyled" id="designationSubmenu">
+                        <li>
+                            <a href="/designations/add">Add</a>
+                        </li>
+                        <li>
+                            <a href="/designations">View</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#countrySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-flag"></i>
+                        Country
+                    </a>
+                    <ul class="collapse list-unstyled" id="countrySubmenu">
+                        <li>
+                            <a href="/countries/add">Add</a>
+                        </li>
+                        <li>
+                            <a href="/countries">View</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#stateSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-map"></i>
+                        State
+                    </a>
+                    <ul class="collapse list-unstyled" id="stateSubmenu">
+                        <li>
+                            <a href="/states/add">Add</a>
+                        </li>
+                        <li>
+                            <a href="/states">View</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#citySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-map-pin"></i>
+                        City
+                    </a>
+                    <ul class="collapse list-unstyled" id="citySubmenu">
+                        <li>
+                            <a href="/cities/add">Add</a>
+                        </li>
+                        <li>
+                            <a href="/cities">View</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+    
+        </nav>
+    
+        <!-- Page Content  -->
+        <div id="content">
+    
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+    
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-align-left"></i>
+                    </button>
+                </div>
+            </nav>
+
+            <table id="employeeDataTable" class="display datatable" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>PhoneNumber</th>
+                        <th>Address</th>
+                        <th>Company</th>
+                        <th>Designation</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <!-- Modal -->
+            <div id="editModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="firstName">First Name:</label>
+                                    <input type="text" class="form-control" name="firstName" id="firstName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name:</label>
+                                    <input type="text" class="form-control" name="lastName" id="lastName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email address:</label>
+                                    <input type="email" class="form-control" name="email" id="email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phoneNumber">Phone Number:</label>
+                                    <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber">
+                                </div>
+                                <div class="form-group">
+                                    <label for="company">Company:</label>
+                                    <select class="form-control" name="company" id="company">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="designation">Designation:</label>
+                                    <select class="form-control" name="designation" id="designation">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="country">Country:</label>
+                                    <select class="form-control" name="country" id="country">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="state">State:</label>
+                                    <select class="form-control" name="state" id="state">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="city">City:</label>
+                                    <select class="form-control" name="city" id="city">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addressLine1">Address 1:</label>
+                                    <input type="text" class="form-control" name="addressLine1" id="addressLine1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="addressLine2">Address 2:</label>
+                                    <input type="text" class="form-control" name="addressLine2" id="addressLine2">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <!-- Popper.JS -->
+    <script src="/node_modules/popper.js/dist/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Datatables JS -->
+    <script src="/node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/assets/js/main.js"></script>
+
+</body>
+
+</html>

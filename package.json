@@ -18,6 +18,12 @@
   },
   "homepage": "https://github.com/batabyalsunny/profileapp-ui#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "bootstrap": "^4.3.1",
+    "datatables": "^1.10.18",
+    "express": "^4.16.4",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.4.0",
+    "nodemon": "^1.18.11",
+    "popper.js": "^1.15.0"
   }
 }
