@@ -6,7 +6,7 @@ $(document).ready(function () {
         $('#sidebar').toggleClass('active')
     })
 
-    $('table.datatable').DataTable( {
+    var dataTable = $('table.datatable').DataTable( {
         "ajax": {
             "type"   : "GET",
             "url"    : API_BASE + "/employees",
@@ -62,8 +62,6 @@ $(document).ready(function () {
     } )
 
     $('table').on('click', '.edit-button', function () {
-        var id = $(this).data('id')
-        var addressId = $(this).data('address-id')
         var cityId = $(this).data('city-id')
         var stateId = $(this).data('state-id')
         var countryId = $(this).data('country-id')
@@ -77,6 +75,8 @@ $(document).ready(function () {
         $('#phoneNumber').val($(this).data('phone-number'))
         $('#addressLine1').val($(this).data('address-line-1'))
         $('#addressLine2').val($(this).data('address-line-2'))
+        $('#addressId').val($(this).data('address-id'))
+        $('#employeeId').val($(this).data('id'))
 
         fillCompanies(companyId)
         fillDesignations(designationId)
@@ -98,6 +98,87 @@ $(document).ready(function () {
         fillCities(stateId)
     })
 
+    $('#submitButton').on('click', function (e) {
+        // Get form data.
+        var formData = new FormData($('#employeeForm')[0]);
+        var formDataObj = Array.from(formData).reduce((o,[k,v])=>(o[k]=v,o),{});
+
+        var success = false;
+        
+        // Put request to update address.
+        $.ajax({
+            type: "PUT",
+            url: API_BASE +"/addresses/"+ formDataObj.addressId,
+            contentType: "application/json",
+            data: JSON.stringify({
+                "addressLine1": formDataObj.addressLine1,
+                "addressLine2": formDataObj.addressLine2,
+                "city": {
+                    "id": formDataObj.city,
+                    "state": {
+                        "id": formDataObj.state,
+                        "country": {
+                            "id": formDataObj.country
+                        }
+                    }
+                }
+            }),
+            success: function (res) {
+                if (success) {
+                    dataTable.ajax.reload();
+                    $('#editModal').modal('hide')
+                    $('#successAlert').alert().show()
+                    $('#successAlertMessage').text('Record updated successfully.')
+                } else {
+                    success = true
+                }
+            },
+            error: (error) => {
+                $('#editModal').modal('hide')
+                $('#errorAlert').alert().show()
+                $('#errorAlertMessage').text('Unexpected error has occurred.')
+            }
+        })
+
+        // Put request to update employee.
+        $.ajax({
+            type: "PUT",
+            url: API_BASE +"/employees/"+ formDataObj.employeeId,
+            contentType: "application/json",
+            data: JSON.stringify({
+                "firstName": formDataObj.firstName,
+                "lastName": formDataObj.lastName,
+                "email": formDataObj.email,
+                "phoneNumber": formDataObj.phoneNumber,
+                "address": {
+                    "id": formDataObj.addressId
+                },
+                "company": {
+                    "id": formDataObj.company
+                },
+                "designation": {
+                    "id": formDataObj.designation
+                }
+            }),
+            success: function (res) {
+                if (success) {
+                    dataTable.ajax.reload();
+                    $('#editModal').modal('hide')
+                    $('#successAlert').alert().show()
+                    $('#successAlertMessage').text('Record updated successfully.')
+                } else {
+                    success = true
+                }
+            },
+            error: (error) => {
+                $('#editModal').modal('hide')
+                $('#errorAlert').alert().show()
+                $('#errorAlertMessage').text('Unexpected error has occurred.')
+            }
+        })
+
+    })
+
 })
 
 var fillCompanies = function (companyId) {
@@ -107,7 +188,7 @@ var fillCompanies = function (companyId) {
     // Company call.
     $.ajax({
         type: "GET",
-        url: API_BASE + "/companies",
+        url: API_BASE +"/companies",
         success: function (res) {
             res.forEach(function (company) {
                 var selected = (companyId === company.id) ? 'selected' : '';
@@ -151,7 +232,7 @@ var fillCountries = function (countryId) {
     })
 }
 
-var fillStates = function (countryId, clearPrevious, stateId) {
+var fillStates = function (countryId, stateId) {
     // Clear the select box.
     $('#state').empty()
 
@@ -168,7 +249,7 @@ var fillStates = function (countryId, clearPrevious, stateId) {
     })
 }
 
-var fillCities = function (stateId, clearPrevious, cityId) {
+var fillCities = function (stateId, cityId) {
     // Clear the select box.
     $('#city').empty()
 

@@ -27,7 +27,9 @@
         <nav id="sidebar">
             <div class="sidebar-header">
                 <h3>Bootstrap Sidebar</h3>
-                <strong>BS</strong>
+                <button type="button" id="sidebarCollapse" class="btn btn-info float-right fab-header">
+                    <i class="fas fa-align-left"></i>
+                </button>
             </div>
     
             <ul class="list-unstyled components">
@@ -124,9 +126,17 @@
     
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-    
-                    <button type="button" id="sidebarCollapse" class="btn btn-info">
-                        <i class="fas fa-align-left"></i>
+                </div>
+                <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+                    <strong>Success!</strong> <span id="successAlertMessage"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="errorAlert">
+                    <strong>Opps!</strong> <span id="errorAlertMessage"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
             </nav>
@@ -207,6 +217,8 @@
                                     <label for="addressLine2">Address 2:</label>
                                     <input type="text" class="form-control" name="addressLine2" id="addressLine2">
                                 </div>
+                                <input type="hidden" class="form-control" name="employeeId" id="employeeId">
+                                <input type="hidden" class="form-control" name="addressId" id="addressId">
                             </form>
                         </div>
                         <div class="modal-footer">
