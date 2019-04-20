@@ -55,7 +55,8 @@ $(document).ready(function () {
                 'searchable': false,
                 'orderable': false,
                 'mRender': function ( data, type, row ) {
-                    return '<a data-toggle="modal" data-target="#myModal"><i class="fas fa-trash"></i></a>';
+                    return '<a href="#" class="delete-button" data-toggle="modal" data-target="#confirmModal" data-id="'
+                    + row.id +'"><i class="fas fa-trash"></i></a>';
                 }
             }
         ]
@@ -84,6 +85,10 @@ $(document).ready(function () {
         fillStates(countryId, stateId)
         fillCities(stateId, cityId)
 
+    })
+
+    $('table').on('click', '.delete-button', function () {
+        $('#confirmButton').data('id', $(this).data('id'))
     })
 
     $('#editModal').on('change', 'select#country', function () {
@@ -177,6 +182,27 @@ $(document).ready(function () {
             }
         })
 
+    })
+
+    $('#confirmButton').on('click', function (e) {
+        var id = $(this).data('id');
+        
+        // Put request to update address.
+        $.ajax({
+            type: "DELETE",
+            url: API_BASE +"/employees/"+ id,
+            success: function (res) {
+                dataTable.ajax.reload();
+                $('#confirmModal').modal('hide')
+                $('#successAlert').alert().show()
+                $('#successAlertMessage').text('Record deleted successfully.')
+            },
+            error: (error) => {
+                $('#confirmModal').modal('hide')
+                $('#errorAlert').alert().show()
+                $('#errorAlertMessage').text('Unexpected error has occurred.')
+            }
+        })
     })
 
 })
