@@ -41,7 +41,7 @@ $(document).ready(function () {
                 'searchable': false,
                 'orderable': false,
                 'mRender': function ( data, type, row ) {
-                    return '<a href="#" class="edit-button" data-toggle="modal" data-target="#editModal" data-id="'
+                    return '<a href="#" class="edit-button" data-toggle="modal" data-target="#employeeModal" data-id="'
                     + row.id +'" data-address-id="'+ row.address.id +'" data-company-id="'+ row.companyId
                     +'" data-designation-id="'+ row.designationId +'" data-city-id="'+row.address.city.id
                     +'" data-state-id="'+ row.address.city.state.id +'" data-country-id="'+ row.address.city.state.country.id
@@ -85,19 +85,21 @@ $(document).ready(function () {
         fillStates(countryId, stateId)
         fillCities(stateId, cityId)
 
+        $('#submitButton').data('action', 'edit')
+
     })
 
     $('table').on('click', '.delete-button', function () {
         $('#confirmButton').data('id', $(this).data('id'))
     })
 
-    $('#editModal').on('change', 'select#country', function () {
+    $('#employeeModal').on('change', 'select#country', function () {
         // Get the country ID.
         var countryId = $(this).val()
         fillStates(countryId)
     })
 
-    $('#editModal').on('change', 'select#state', function () {
+    $('#employeeModal').on('change', 'select#state', function () {
         // Get the state ID.
         var stateId = $(this).val()
         fillCities(stateId)
@@ -105,15 +107,24 @@ $(document).ready(function () {
 
     $('#submitButton').on('click', function (e) {
         // Get form data.
-        var formData = new FormData($('#employeeForm')[0]);
-        var formDataObj = Array.from(formData).reduce((o,[k,v])=>(o[k]=v,o),{});
+        var formData = new FormData($('#employeeForm')[0])
+        var formDataObj = Array.from(formData).reduce((o,[k,v])=>(o[k]=v,o),{})
 
-        var success = false;
-        
-        // Put request to update address.
+        var type
+        var employeeId
+
+        if ('edit' === $('#submitButton').data('action')) {
+            type = "PUT"
+            employeeId = formDataObj.employeeId
+        } else if ('add' === $('#submitButton').data('action')) {
+            type = "POST"
+            employeeId = ''
+        }
+
+        // Add address.
         $.ajax({
-            type: "PUT",
-            url: API_BASE +"/addresses/"+ formDataObj.addressId,
+            type: "POST",
+            url: API_BASE +"/addresses/",
             contentType: "application/json",
             data: JSON.stringify({
                 "addressLine1": formDataObj.addressLine1,
@@ -129,51 +140,38 @@ $(document).ready(function () {
                 }
             }),
             success: function (res) {
-                if (success) {
-                    dataTable.ajax.reload();
-                    $('#editModal').modal('hide')
-                    $('#successAlert').alert().show()
-                    $('#successAlertMessage').text('Record updated successfully.')
-                } else {
-                    success = true
-                }
-            },
-            error: (error) => {
-                $('#editModal').modal('hide')
-                $('#errorAlert').alert().show()
-                $('#errorAlertMessage').text('Unexpected error has occurred.')
-            }
-        })
-
-        // Put request to update employee.
-        $.ajax({
-            type: "PUT",
-            url: API_BASE +"/employees/"+ formDataObj.employeeId,
-            contentType: "application/json",
-            data: JSON.stringify({
-                "firstName": formDataObj.firstName,
-                "lastName": formDataObj.lastName,
-                "email": formDataObj.email,
-                "phoneNumber": formDataObj.phoneNumber,
-                "address": {
-                    "id": formDataObj.addressId
-                },
-                "company": {
-                    "id": formDataObj.company
-                },
-                "designation": {
-                    "id": formDataObj.designation
-                }
-            }),
-            success: function (res) {
-                if (success) {
-                    dataTable.ajax.reload();
-                    $('#editModal').modal('hide')
-                    $('#successAlert').alert().show()
-                    $('#successAlertMessage').text('Record updated successfully.')
-                } else {
-                    success = true
-                }
+                // Add/update employee.
+                $.ajax({
+                    type: type,
+                    url: API_BASE +"/employees/"+ employeeId,
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        "firstName": formDataObj.firstName,
+                        "lastName": formDataObj.lastName,
+                        "email": formDataObj.email,
+                        "phoneNumber": formDataObj.phoneNumber,
+                        "address": {
+                            "id": res.id
+                        },
+                        "company": {
+                            "id": formDataObj.company
+                        },
+                        "designation": {
+                            "id": formDataObj.designation
+                        }
+                    }),
+                    success: function (res) {
+                        dataTable.ajax.reload();
+                        $('#employeeModal').modal('hide')
+                        $('#successAlert').alert().show()
+                        $('#successAlertMessage').text('Record added/updated successfully.')
+                    },
+                    error: (error) => {
+                        $('#employeeModal').modal('hide')
+                        $('#errorAlert').alert().show()
+                        $('#errorAlertMessage').text('Unexpected error has occurred.')
+                    }
+                })
             },
             error: (error) => {
                 $('#editModal').modal('hide')
@@ -203,6 +201,18 @@ $(document).ready(function () {
                 $('#errorAlertMessage').text('Unexpected error has occurred.')
             }
         })
+    })
+
+    $('.form-modal').on('hidden.bs.modal', function () {
+        $(this).find('form').find("input, textarea, select").val("")
+    });
+
+    $('#addButton').on('click', function () {
+        fillCompanies();
+        fillDesignations();
+        fillCountries();
+
+        $('#submitButton').data('action', 'add')
     })
 
 })

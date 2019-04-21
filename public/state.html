@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Collapsible sidebar using Bootstrap 4</title>
+    <title>Employee Management</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
@@ -16,8 +16,8 @@
     <link rel="stylesheet" href="/assets/styles/main.css">
 
     <!-- Font Awesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"></script>
 </head>
 
 <body>
@@ -26,96 +26,48 @@
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3>Bootstrap Sidebar</h3>
+                <h3>Employee Management</h3>
                 <button type="button" id="sidebarCollapse" class="btn btn-info float-right fab-header">
                     <i class="fas fa-align-left"></i>
                 </button>
             </div>
     
             <ul class="list-unstyled components">
-                <li class="active">
-                    <a href="#employeeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <li>
+                    <a href="/employees">
                         <i class="fas fa-user"></i>
                         Employee
                     </a>
-                    <ul class="collapse list-unstyled" id="employeeSubmenu">
-                        <li>
-                            <a href="/employees/add">Add</a>
-                        </li>
-                        <li>
-                            <a href="/employees">View</a>
-                        </li>
-                    </ul>
                 </li>
                 <li>
-                    <a href="#companySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <a href="/companies">
                         <i class="fas fa-bank"></i>
                         Company
                     </a>
-                    <ul class="collapse list-unstyled" id="companySubmenu">
-                        <li>
-                            <a href="/companies/add">Add</a>
-                        </li>
-                        <li>
-                            <a href="/companies">View</a>
-                        </li>
-                    </ul>
                 </li>
                 <li>
-                    <a href="#designationSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <a href="/designations">
                         <i class="fas fa-tasks"></i>
                         Designation
                     </a>
-                    <ul class="collapse list-unstyled" id="designationSubmenu">
-                        <li>
-                            <a href="/designations/add">Add</a>
-                        </li>
-                        <li>
-                            <a href="/designations">View</a>
-                        </li>
-                    </ul>
                 </li>
                 <li>
-                    <a href="#countrySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <a href="/countries">
                         <i class="fas fa-flag"></i>
                         Country
                     </a>
-                    <ul class="collapse list-unstyled" id="countrySubmenu">
-                        <li>
-                            <a href="/countries/add">Add</a>
-                        </li>
-                        <li>
-                            <a href="/countries">View</a>
-                        </li>
-                    </ul>
                 </li>
-                <li>
-                    <a href="#stateSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <li class="active">
+                    <a href="/states">
                         <i class="fas fa-map"></i>
                         State
                     </a>
-                    <ul class="collapse list-unstyled" id="stateSubmenu">
-                        <li>
-                            <a href="/states/add">Add</a>
-                        </li>
-                        <li>
-                            <a href="/states">View</a>
-                        </li>
-                    </ul>
                 </li>
                 <li>
-                    <a href="#citySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <a href="/cities">
                         <i class="fas fa-map-pin"></i>
                         City
                     </a>
-                    <ul class="collapse list-unstyled" id="citySubmenu">
-                        <li>
-                            <a href="/cities/add">Add</a>
-                        </li>
-                        <li>
-                            <a href="/cities">View</a>
-                        </li>
-                    </ul>
                 </li>
             </ul>
     
@@ -141,6 +93,10 @@
                 </div>
             </nav>
 
+            <div class="text-center">
+                <button type="button" class="add-button" data-toggle="modal" data-target="#employeeModal"  id="addButton"><i class="fas fa-plus"></i></button>
+            </div>
+
             <table id="employeeDataTable" class="display datatable" style="width:100%">
                 <thead>
                     <tr>
@@ -157,13 +113,13 @@
             </table>
 
             <!-- Modal -->
-            <div id="editModal" class="modal fade" role="dialog">
+            <div id="employeeModal" class="modal fade form-modal" role="dialog">
                 <div class="modal-dialog">
                 
                     <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Edit</h4>
+                            <h4 class="modal-title">Employee</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
