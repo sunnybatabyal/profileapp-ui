@@ -181,3 +181,45 @@ a[data-toggle="collapse"] {
 .alert {
     display: none;
 }
+
+.img-thumbnail:hover {
+    opacity: 0.5
+}
+.img-thumbnail:hover .img-overlay-icon {
+    opacity: 1; /* added */
+    top: 0; /* added */
+    z-index: 500;
+}
+/* added */
+.img-thumbnail:hover .img-overlay-icon {
+    top: 50%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+}
+/* added */
+/* .img-overlay-icon {
+    display: block;
+    position: absolute;
+    top: -100%;
+    opacity: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    color: inherit;
+} */
+
+.img-overlay-icon {
+    position: absolute;
+    top: 38%;
+}
+
+.img-overlay-edit-icon {
+    left: 35%;
+}
+
+.img-overlay-delete-icon {
+    left: 55%;
+}

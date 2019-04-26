@@ -215,6 +215,27 @@ $(document).ready(function () {
         $('#submitButton').data('action', 'add')
     })
 
+    $('#assetForm').on('submit', function (e) {
+        e.preventDefault()
+
+        var formData = new FormData($('#assetForm')[0])
+
+        // File upload ajax call.
+        $.ajax({
+            type: "POST",
+            url: API_BASE +"/assets",
+            data: formData,
+            enctype: "multipart/form-data",
+            processData: false,  // Important!
+            contentType: false,
+            cache: false,
+            success: function (res) {
+                location.reload();
+            }
+        })
+    })
+
+    fillAssetTypes();
 })
 
 var fillCompanies = function (companyId) {
@@ -297,6 +318,22 @@ var fillCities = function (stateId, cityId) {
             res.forEach(function (city) {
                 var selected = (cityId === city.id) ? 'selected' : '';
                 $('#city').append('<option '+ selected +' value="'+ city.id +'">'+ city.name +'</option>')
+            })
+        }
+    })
+}
+
+var fillAssetTypes = function () {
+    // Clear old.
+    $('#assetType').empty()
+
+    // Get asset types.
+    $.ajax({
+        type: "GET",
+        url: API_BASE + "/asset-types",
+        success: function (res) {
+            res.forEach(function (assetType) {
+                $('#assetType').append('<option value="'+ assetType.id +'">'+ assetType.type +'</option>')
             })
         }
     })

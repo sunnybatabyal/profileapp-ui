@@ -1,0 +1,158 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Employee Management</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/node_modules/datatables/media/css/jquery.dataTables.min.css   ">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="/assets/styles/main.css">
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Employee Management</h3>
+                <button type="button" id="sidebarCollapse" class="btn btn-info float-right fab-header">
+                    <i class="fas fa-align-left"></i>
+                </button>
+            </div>
+    
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="/employees">
+                        <i class="fas fa-user"></i>
+                        Employee
+                    </a>
+                </li>
+                <li>
+                    <a href="/companies">
+                        <i class="fas fa-bank"></i>
+                        Company
+                    </a>
+                </li>
+                <li>
+                    <a href="/designations">
+                        <i class="fas fa-tasks"></i>
+                        Designation
+                    </a>
+                </li>
+                <li>
+                    <a href="/countries">
+                        <i class="fas fa-flag"></i>
+                        Country
+                    </a>
+                </li>
+                <li>
+                    <a href="/states">
+                        <i class="fas fa-map"></i>
+                        State
+                    </a>
+                </li>
+                <li>
+                    <a href="/cities">
+                        <i class="fas fa-map-pin"></i>
+                        City
+                    </a>
+                </li>
+            </ul>
+    
+        </nav>
+    
+        <!-- Page Content  -->
+        <div id="content">
+    
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                </div>
+                <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+                    <strong>Success!</strong> <span id="successAlertMessage"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="errorAlert">
+                    <strong>Opps!</strong> <span id="errorAlertMessage"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </nav>
+
+            <div class="text-center">
+                <form id="assetForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Chose file to share.</label>
+                        <input id="assetFile" name="files" type="file" multiple>
+                        <select id="assetType" name="type"></select>
+                        <button class="btn btn-primary" type="submit" id="uploadButton">Upload</button>
+                    </div>
+                </form>
+            </div>
+
+            <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">Images Gallery</h1>
+
+            <hr class="mt-2 mb-5">
+
+            <div class="row text-center text-lg-left">
+
+                <div class="col-lg-3 col-md-4 col-6">
+                    <a href="#" class="d-block mb-4 h-45">
+                        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/pWkk7iiCoDM/400x300" alt="">
+                        <a href="#" class="img-overlay-icon img-overlay-edit-icon"><i class="fas fa-pencil fa-2x"></i></a>
+                        <a href="#" class="img-overlay-icon img-overlay-delete-icon"><i class="fas fa-trash fa-2x"></i></a>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <a href="#" class="d-block mb-4 h-45">
+                        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/aob0ukAYfuI/400x300" alt="">
+                        <a href="#" class="img-overlay-icon img-overlay-edit-icon"><i class="fas fa-pencil fa-2x"></i></a>
+                        <a href="#" class="img-overlay-icon img-overlay-delete-icon"><i class="fas fa-trash fa-2x"></i></a>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <a href="#" class="d-block mb-4 h-45">
+                        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/EUfxH-pze7s/400x300" alt="">
+                        <a href="#" class="img-overlay-icon img-overlay-edit-icon"><i class="fas fa-pencil fa-2x"></i></a>
+                        <a href="#" class="img-overlay-icon  img-overlay-delete-icon"><i class="fas fa-trash fa-2x"></i></a>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <a href="#" class="d-block mb-4 h-45">
+                        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/M185_qYH8vg/400x300" alt="">
+                        <a href="#" class="img-overlay-icon img-overlay-edit-icon"><i class="fas fa-pencil fa-2x"></i></a>
+                        <a href="#" class="img-overlay-icon img-overlay-delete-icon"><i class="fas fa-trash fa-2x"></i></a>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <!-- Popper.JS -->
+    <script src="/node_modules/popper.js/dist/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Datatables JS -->
+    <script src="/node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/assets/js/main.js"></script>
+
+</body>
+
+</html>
