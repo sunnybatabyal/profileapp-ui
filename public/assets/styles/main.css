@@ -223,3 +223,7 @@ a[data-toggle="collapse"] {
 .img-overlay-delete-icon {
     left: 55%;
 }
+.img-thumbnail {
+    max-height: 270px;
+    max-width: 270px;
+}

@@ -235,8 +235,135 @@ $(document).ready(function () {
         })
     })
 
+    $('body').on('click', '#deleteAssetButton', function (e) {
+        e.preventDefault();
+
+        var id = $(this).data('id')
+
+        $('#confirmAssetDeleteButton').data('id', id)
+        $('#confirmModal').modal('show');
+    })
+
+    $('body').on('click', '#editAssetButton', function (e) {
+        e.preventDefault();
+
+        var id = $(this).data('id')
+
+        // Get asset.
+        $.ajax({
+            type: "GET",
+            url: API_BASE +"/assets/" + id,
+            success: function (res) {
+                fillAssetTypes($('#assetTypeInModal'), res.assetType.id)
+                $('#assetName').val(res.assetName)
+                $('#assetId').val(res.id)
+                $('#editAssetModel').modal('show')
+            },
+            error: function () {
+                $('#errorAlert').alert().show()
+                $('#errorAlertMessage').text('Unexpected error has occurred.')
+            }
+        })
+    })
+
+    $('body').on('click','#confirmAssetDeleteButton' , function (e) {
+        var id = $(this).data('id')
+        
+        // Put request to update address.
+        $.ajax({
+            type: "DELETE",
+            url: API_BASE +"/assets/" + id,
+            success: function (res) {
+                showAssets()
+                $('#confirmModal').modal('hide')
+                $('#successAlert').alert().show()
+                $('#successAlertMessage').text('Asset deleted successfully.')
+            },
+            error: (error) => {
+                $('#confirmModal').modal('hide')
+                $('#errorAlert').alert().show()
+                $('#errorAlertMessage').text('Unexpected error has occurred.')
+            }
+        })
+    })
+
+    $('body').on('click','#editAssetModelSubmitButton' , function (e) {
+        
+        e.preventDefault()
+
+        var id = $('#assetId').val()
+        var name = $('#assetName').val()
+        var typeId = $('#assetTypeInModal').val()
+      
+        // File upload ajax call.
+        $.ajax({
+            type: "PUT",
+            url: API_BASE +"/assets/" + id,
+            contentType: "application/json",
+            data: JSON.stringify({
+                "assetName": name,
+                "assetType": {
+                    "id": typeId,
+                }
+            }),
+            success: (res) => {
+                $('#editAssetModel').modal('hide')
+                $('#successAlert').alert().show()
+                $('#successAlertMessage').text('Record updated successfully.')
+            },
+            error: (error) => {
+                $('#editAssetModel').modal('hide')
+                $('#errorAlert').alert().show()
+                $('#errorAlertMessage').text('Unexpected error has occurred.')
+            }
+        })
+    })
+
     fillAssetTypes();
+
+    showAssets();
 })
+
+var showAssets = function () {
+
+    // Assets container.
+    var assetContainer = $('#assetContainer');
+
+    // Assets call.
+    $.ajax({
+        type: "GET",
+        url: API_BASE +"/assets",
+        success: function (res) {
+
+            assetContainer.empty()
+
+            res.forEach(function (asset) {
+
+                var assetTag
+
+                // Determine tag depending on asset type.
+                if (-1 < asset.mimeType.indexOf('video')) {
+                    assetTag = '<video class="img-fluid img-thumbnail" controls>'+
+                                        '<source src="'+ API_BASE+ '/assets/' + asset.id + '/stream' +'" type="'+ asset.mimeType +'">'+
+                                    '</video>'
+                } else if (-1 < asset.mimeType.indexOf('image')) {
+                    assetTag = '<img class="img-fluid img-thumbnail" src="'+ API_BASE+ '/assets/' + asset.id + '/render' +'" alt="'+ asset.assetName +'"></img>'
+                } else {
+                    // No preview image tag.
+                    assetTag = '<img class="img-fluid img-thumbnail" src="/assets/images/blank-file.png" alt="'+ asset.assetName +'"></img>'
+                }
+
+                assetContainer.append('<div class="col-lg-3 col-md-4 col-6">'+
+                '<a href="#" class="d-block mb-4 h-45">' +
+                    assetTag +
+                    '<a href="#" id="editAssetButton" data-id="'+ asset.id +'" class="img-overlay-icon img-overlay-edit-icon"><i class="fas fa-pencil fa-2x"></i></a>'+
+                    '<a href="#" id="deleteAssetButton" data-id="'+ asset.id +'" class="img-overlay-icon img-overlay-delete-icon"><i class="fas fa-trash fa-2x"></i></a>'+
+                '</a>'+
+            '</div>')
+            })
+        }
+    })
+}
 
 var fillCompanies = function (companyId) {
     // Clear old.
@@ -323,9 +450,13 @@ var fillCities = function (stateId, cityId) {
     })
 }
 
-var fillAssetTypes = function () {
+var fillAssetTypes = function (container, selectedId) {
+
+    container = (undefined === container) ? $('#assetType') : container;
+    selectedId = (undefined === selectedId) ? 0 : selectedId;
+
     // Clear old.
-    $('#assetType').empty()
+    container.empty()
 
     // Get asset types.
     $.ajax({
@@ -333,7 +464,8 @@ var fillAssetTypes = function () {
         url: API_BASE + "/asset-types",
         success: function (res) {
             res.forEach(function (assetType) {
-                $('#assetType').append('<option value="'+ assetType.id +'">'+ assetType.type +'</option>')
+                var selected = (selectedId === assetType.id) ? 'selected' : '';
+                container.append('<option '+ selected +' value="'+ assetType.id +'">'+ assetType.type +'</option>')
             })
         }
     })
