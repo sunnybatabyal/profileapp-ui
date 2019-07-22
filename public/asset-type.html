@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Employee Management</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/node_modules/datatables/media/css/jquery.dataTables.min.css   ">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="/assets/styles/main.css">
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Employee Management</h3>
+                <button type="button" id="sidebarCollapse" class="btn btn-info float-right fab-header">
+                    <i class="fas fa-align-left"></i>
+                </button>
+            </div>
+    
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="/employees">
+                        <i class="fas fa-user"></i>
+                        Employee
+                    </a>
+                </li>
+                <li>
+                    <a href="/companies">
+                        <i class="fas fa-bank"></i>
+                        Company
+                    </a>
+                </li>
+                <li>
+                    <a href="/designations">
+                        <i class="fas fa-tasks"></i>
+                        Designation
+                    </a>
+                </li>
+                <li>
+                    <a href="/countries">
+                        <i class="fas fa-flag"></i>
+                        Country
+                    </a>
+                </li>
+                <li>
+                    <a href="/states">
+                        <i class="fas fa-map"></i>
+                        State
+                    </a>
+                </li>
+                <li>
+                    <a href="/cities">
+                        <i class="fas fa-map-pin"></i>
+                        City
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/asset-types">
+                        <i class="fas fa-file"></i>
+                        Asset Type
+                    </a>
+                </li>
+            </ul>
+    
+        </nav>
+    
+        <!-- Page Content  -->
+        <div id="content">
+    
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                </div>
+                <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert">
+                    <strong>Success!</strong> <span id="successAlertMessage"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="errorAlert">
+                    <strong>Opps!</strong> <span id="errorAlertMessage"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </nav>
+
+            <div class="text-center">
+                <button type="button" class="add-button" data-toggle="modal" data-target="#employeeModal"  id="addButton"><i class="fas fa-plus"></i></button>
+            </div>
+
+            <table id="employeeDataTable" class="display datatable" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>PhoneNumber</th>
+                        <th>Address</th>
+                        <th>Company</th>
+                        <th>Designation</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <!-- Modal -->
+            <div id="employeeModal" class="modal fade form-modal" role="dialog">
+                <div class="modal-dialog">
+                
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Employee</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="employeeForm">
+                                <div class="form-group">
+                                    <label for="firstName">First Name:</label>
+                                    <input type="text" class="form-control" name="firstName" id="firstName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name:</label>
+                                    <input type="text" class="form-control" name="lastName" id="lastName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email address:</label>
+                                    <input type="email" class="form-control" name="email" id="email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phoneNumber">Phone Number:</label>
+                                    <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber">
+                                </div>
+                                <div class="form-group">
+                                    <label for="company">Company:</label>
+                                    <select class="form-control" name="company" id="company">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="designation">Designation:</label>
+                                    <select class="form-control" name="designation" id="designation">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="country">Country:</label>
+                                    <select class="form-control" name="country" id="country">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="state">State:</label>
+                                    <select class="form-control" name="state" id="state">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="city">City:</label>
+                                    <select class="form-control" name="city" id="city">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addressLine1">Address 1:</label>
+                                    <input type="text" class="form-control" name="addressLine1" id="addressLine1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="addressLine2">Address 2:</label>
+                                    <input type="text" class="form-control" name="addressLine2" id="addressLine2">
+                                </div>
+                                <input type="hidden" class="form-control" name="employeeId" id="employeeId">
+                                <input type="hidden" class="form-control" name="addressId" id="addressId">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="submitButton" type="submit" class="btn btn-success">Submit</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div id="confirmModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Confirm</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure to delete this record?
+                        </div>
+                        <div class="modal-footer">
+                            <button id="confirmButton" type="button" class="btn btn-danger">Confirm</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <!-- Popper.JS -->
+    <script src="/node_modules/popper.js/dist/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Datatables JS -->
+    <script src="/node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
+    <!-- Custom JS -->
+    <script src="/assets/js/main.js"></script>
+
+</body>
+
+</html>

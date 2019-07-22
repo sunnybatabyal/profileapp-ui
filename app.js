@@ -22,6 +22,9 @@ app.get('/states', (req, res) => res.sendFile('state.html', { root: 'public' }))
 // City routes.
 app.get('/cities', (req, res) => res.sendFile('city.html', { root: 'public' }))
 
+// Asset routes.
+app.get('/asset-types', (req, res) => res.sendFile('asset-type.html', { root: 'public' }))
+
 app.listen(port, () => console.log(`profileapp listening on port ${port}!`))
 
 // Node modules.
