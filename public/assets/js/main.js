@@ -6,7 +6,7 @@ $(document).ready(function () {
         $('#sidebar').toggleClass('active')
     })
 
-    var dataTable = $('table.datatable').DataTable( {
+    var employeeDataTable = $('#employeeDataTable').DataTable( {
         "ajax": {
             "type"   : "GET",
             "url"    : API_BASE + "/employees",
@@ -49,6 +49,42 @@ $(document).ready(function () {
                     +'" data-email="'+ row.email +'" data-phone-number="'+ row.phoneNumber
                     +'" data-address-line-1="'+ row.address.addressLine1 +'" data-address-line-2="'+ row.address.addressLine2
                     +'"><i class="fas fa-pencil"></i></a>';
+                }
+            },
+            {
+                'searchable': false,
+                'orderable': false,
+                'mRender': function ( data, type, row ) {
+                    return '<a href="#" class="delete-button" data-toggle="modal" data-target="#confirmModal" data-id="'
+                    + row.id +'"><i class="fas fa-trash"></i></a>';
+                }
+            }
+        ]
+    } )
+
+    var assetTypeDataTable = $('#assetTypeDataTable').DataTable( {
+        "ajax": {
+            "type"   : "GET",
+            "url"    : API_BASE + "/asset-types",
+            "dataSrc": function (json) {
+                var data = new Array();
+                for(var i=0;i< json.length; i++){
+                    data.push({
+                        'id': json[i].id,
+                        'type': json[i].type,
+                    })
+                }
+                return data;
+            }
+        },
+        "columns": [
+            {'data': 'type'},
+            {
+                'searchable': false,
+                'orderable': false,
+                'mRender': function ( data, type, row ) {
+                    return '<a href="#" class="edit-button" data-toggle="modal" data-target="#assetTypeModal" data-id="'
+                    + row.id +'"><i class="fas fa-pencil"></i></a>';
                 }
             },
             {

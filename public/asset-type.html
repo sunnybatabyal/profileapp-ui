@@ -100,18 +100,13 @@
             </nav>
 
             <div class="text-center">
-                <button type="button" class="add-button" data-toggle="modal" data-target="#employeeModal"  id="addButton"><i class="fas fa-plus"></i></button>
+                <button type="button" class="add-button" data-toggle="modal" data-target="#assetTypeModal"  id="addButton"><i class="fas fa-plus"></i></button>
             </div>
 
-            <table id="employeeDataTable" class="display datatable" style="width:100%">
+            <table id="assetTypeDataTable" class="display datatable" style="width:100%">
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Email</th>
-                        <th>PhoneNumber</th>
-                        <th>Address</th>
-                        <th>Company</th>
-                        <th>Designation</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
@@ -119,68 +114,22 @@
             </table>
 
             <!-- Modal -->
-            <div id="employeeModal" class="modal fade form-modal" role="dialog">
+            <div id="assetTypeModal" class="modal fade form-modal" role="dialog">
                 <div class="modal-dialog">
                 
                     <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Employee</h4>
+                            <h4 class="modal-title">Asset Type</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <form id="employeeForm">
+                            <form id="assetTypeForm">
                                 <div class="form-group">
-                                    <label for="firstName">First Name:</label>
-                                    <input type="text" class="form-control" name="firstName" id="firstName">
+                                    <label for="assetTypeName">Type Name: </label>
+                                    <input type="text" class="form-control" name="fassetTypeName" id="assetTypeName">
                                 </div>
-                                <div class="form-group">
-                                    <label for="lastName">Last Name:</label>
-                                    <input type="text" class="form-control" name="lastName" id="lastName">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email address:</label>
-                                    <input type="email" class="form-control" name="email" id="email">
-                                </div>
-                                <div class="form-group">
-                                    <label for="phoneNumber">Phone Number:</label>
-                                    <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber">
-                                </div>
-                                <div class="form-group">
-                                    <label for="company">Company:</label>
-                                    <select class="form-control" name="company" id="company">
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="designation">Designation:</label>
-                                    <select class="form-control" name="designation" id="designation">
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="country">Country:</label>
-                                    <select class="form-control" name="country" id="country">
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="state">State:</label>
-                                    <select class="form-control" name="state" id="state">
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="city">City:</label>
-                                    <select class="form-control" name="city" id="city">
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="addressLine1">Address 1:</label>
-                                    <input type="text" class="form-control" name="addressLine1" id="addressLine1">
-                                </div>
-                                <div class="form-group">
-                                    <label for="addressLine2">Address 2:</label>
-                                    <input type="text" class="form-control" name="addressLine2" id="addressLine2">
-                                </div>
-                                <input type="hidden" class="form-control" name="employeeId" id="employeeId">
-                                <input type="hidden" class="form-control" name="addressId" id="addressId">
+                                <input type="hidden" class="form-control" name="assetTypeId" id="assetTypeId">
                             </form>
                         </div>
                         <div class="modal-footer">
