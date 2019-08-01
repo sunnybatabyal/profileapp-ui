@@ -1,6 +1,38 @@
 const API_BASE = "http://localhost:8080/api/v1"
+const API_TOKEN_COOKIE_KEY = "API_TOKEN";
+
+var apiToken = Cookies.get(API_TOKEN_COOKIE_KEY)
 
 $(document).ready(function () {
+
+    $('#loginButton').on('click', function() {
+        var email = $('#email').val();
+        var pass = $('#password').val();
+
+        // Login API request.
+        $.ajax({
+            type: "POST",
+            url: API_BASE +"/auth/login",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "username": email,
+                "password": pass,
+            }),
+            success: (res) => {
+                Cookies.set(API_TOKEN_COOKIE_KEY, res.token)
+                location.href = '/'
+            },
+            error: (error) => {
+                console.log(error)
+            }
+        })
+
+    })
+
+    // if ('/login' !== location.pathname && '' === apiToken || undefined == apiToken) {
+    //     location.href = '/login'
+    //     return
+    // }
 
     $('#sidebarCollapse').on('click', function () {
         $('#sidebar').toggleClass('active')
@@ -162,6 +194,9 @@ $(document).ready(function () {
             type: "POST",
             url: API_BASE +"/addresses/",
             contentType: "application/json",
+            headers: {
+              "Authorization": "Bearer " + apiToken
+            },
             data: JSON.stringify({
                 "addressLine1": formDataObj.addressLine1,
                 "addressLine2": formDataObj.addressLine2,
@@ -181,6 +216,9 @@ $(document).ready(function () {
                     type: type,
                     url: API_BASE +"/employees/"+ employeeId,
                     contentType: "application/json",
+                    headers: {
+                      "Authorization": "Bearer " + apiToken
+                    },
                     data: JSON.stringify({
                         "firstName": formDataObj.firstName,
                         "lastName": formDataObj.lastName,
@@ -225,6 +263,9 @@ $(document).ready(function () {
         $.ajax({
             type: "DELETE",
             url: API_BASE +"/employees/"+ id,
+            headers: {
+              "Authorization": "Bearer " + apiToken
+            },
             success: function (res) {
                 dataTable.ajax.reload();
                 $('#confirmModal').modal('hide')
@@ -265,6 +306,9 @@ $(document).ready(function () {
             processData: false,  // Important!
             contentType: false,
             cache: false,
+            headers: {
+              "Authorization": "Bearer " + apiToken
+            },
             success: function (res) {
                 location.reload();
             }
@@ -289,6 +333,9 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: API_BASE +"/assets/" + id,
+            headers: {
+              "Authorization": "Bearer " + apiToken
+            },
             success: function (res) {
                 fillAssetTypes($('#assetTypeInModal'), res.assetType.id)
                 $('#assetName').val(res.assetName)
@@ -355,6 +402,34 @@ $(document).ready(function () {
         })
     })
 
+    $('body').on('click','#downloadAssetButton' , function (e) {
+        
+        e.preventDefault()
+
+        var id = $(this).data('id')
+      
+        // File upload ajax call.
+        $.ajax({
+            type: "GET",
+            url: API_BASE +"/assets/" + id +"/download",
+            headers: {
+                "Range":"bytes=0-100000",
+            },
+            async: true,
+            success: (res) => {
+                // $('#editAssetModel').modal('hide')
+                $('#successAlert').alert().show()
+                $('#successAlertMessage').text('Asset downloaded successfully.')
+                console.log(res)
+            },
+            error: (error) => {
+                // $('#editAssetModel').modal('hide')
+                $('#errorAlert').alert().show()
+                $('#errorAlertMessage').text('Unexpected error has occurred.')
+            }
+        })
+    })
+
     fillAssetTypes();
 
     showAssets();
@@ -369,6 +444,9 @@ var showAssets = function () {
     $.ajax({
         type: "GET",
         url: API_BASE +"/assets",
+        headers: {
+          "Authorization": "Bearer " + apiToken
+        },
         success: function (res) {
 
             assetContainer.empty()
@@ -383,7 +461,7 @@ var showAssets = function () {
                                         '<source src="'+ API_BASE+ '/assets/' + asset.id + '/stream' +'" type="'+ asset.mimeType +'">'+
                                     '</video>'
                 } else if (-1 < asset.mimeType.indexOf('image')) {
-                    assetTag = '<img class="img-fluid img-thumbnail" src="'+ API_BASE+ '/assets/' + asset.id + '/render' +'" alt="'+ asset.assetName +'"></img>'
+                    assetTag = '<img class="img-fluid img-thumbnail img-secured" data-src="'+ API_BASE+ '/assets/' + asset.id + '/render' +'" alt="'+ asset.assetName +'"></img>'
                 } else {
                     // No preview image tag.
                     assetTag = '<img class="img-fluid img-thumbnail" src="/assets/images/blank-file.png" alt="'+ asset.assetName +'"></img>'
@@ -394,11 +472,12 @@ var showAssets = function () {
                     assetTag +
                     '<a href="#" id="editAssetButton" data-id="'+ asset.id +'" class="img-overlay-icon img-overlay-edit-icon"><i class="fas fa-pencil fa-2x"></i></a>'+
                     '<a href="#" id="deleteAssetButton" data-id="'+ asset.id +'" class="img-overlay-icon img-overlay-delete-icon"><i class="fas fa-trash fa-2x"></i></a>'+
+                    '<a href="#" id="downloadAssetButton" data-id="'+ asset.id +'" class="img-overlay-icon img-overlay-download-icon"><i class="fas fa-download fa-2x"></i></a>'+
                 '</a>'+
             '</div>')
             })
         }
-    })
+    }).done(renderAllSecuredImages)
 }
 
 var fillCompanies = function (companyId) {
@@ -409,6 +488,9 @@ var fillCompanies = function (companyId) {
     $.ajax({
         type: "GET",
         url: API_BASE +"/companies",
+        headers: {
+          "Authorization": "Bearer " + apiToken
+        },
         success: function (res) {
             res.forEach(function (company) {
                 var selected = (companyId === company.id) ? 'selected' : '';
@@ -426,6 +508,9 @@ var fillDesignations = function (designationId) {
     $.ajax({
         type: "GET",
         url: API_BASE + "/designations",
+        headers: {
+          "Authorization": "Bearer " + apiToken
+        },
         success: function (res) {
             res.forEach(function (designation) {
                 var selected = (designationId === designation.id) ? 'selected' : '';
@@ -443,6 +528,9 @@ var fillCountries = function (countryId) {
     $.ajax({
         type: "GET",
         url: API_BASE + "/countries",
+        headers: {
+          "Authorization": "Bearer " + apiToken
+        },
         success: function (res) {
             res.forEach(function (country) {
                 var selected = (countryId === country.id) ? 'selected' : '';
@@ -460,6 +548,9 @@ var fillStates = function (countryId, stateId) {
     $.ajax({
         type: "GET",
         url: API_BASE +"/countries/"+ countryId +"/states",
+        headers: {
+          "Authorization": "Bearer " + apiToken
+        },
         success: function (res) {
             res.forEach(function (state) {
                 var selected = (stateId === state.id) ? 'selected' : '';
@@ -477,6 +568,9 @@ var fillCities = function (stateId, cityId) {
     $.ajax({
         type: "GET",
         url: API_BASE +"/states/"+ stateId +"/cities",
+        headers: {
+          "Authorization": "Bearer " + apiToken
+        },
         success: function (res) {
             res.forEach(function (city) {
                 var selected = (cityId === city.id) ? 'selected' : '';
@@ -498,11 +592,35 @@ var fillAssetTypes = function (container, selectedId) {
     $.ajax({
         type: "GET",
         url: API_BASE + "/asset-types",
+        headers: {
+          "Authorization": "Bearer " + apiToken
+        },
         success: function (res) {
             res.forEach(function (assetType) {
                 var selected = (selectedId === assetType.id) ? 'selected' : '';
                 container.append('<option '+ selected +' value="'+ assetType.id +'">'+ assetType.type +'</option>')
             })
         }
+    })
+}
+
+var renderAllSecuredImages = () => {
+    $('.img-secured').each((i, element) => {
+        renderSecuredImage($(element).data('src'), $(element))
+    })
+}
+
+var renderSecuredImage = (url, imageTagElement) => {
+    fetch(url, {
+        headers: {
+            Authorization: 'Bearer ' + apiToken
+        } 
+    })
+    .then((response) => response.blob())
+    .then((blob) => {
+        const imageUrl = URL.createObjectURL(blob)
+        const img = document.querySelector('img')
+        img.addEventListener('load', () => URL.revokeObjectURL(imageUrl))
+        imageTagElement.attr('src', imageUrl)
     })
 }

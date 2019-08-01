@@ -4,6 +4,9 @@ const port = 3000
 
 app.get('/', (req, res) => res.sendFile('dashboard.html', { root: 'public' }))
 
+// Login route.
+app.get('/login', (req, res) => res.sendFile('login.html', { root: 'public' }))
+
 // Employees routes.
 app.get('/employees', (req, res) => res.sendFile('employee.html', { root: 'public' }))
 
