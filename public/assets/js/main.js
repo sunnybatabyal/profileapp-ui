@@ -42,6 +42,9 @@ $(document).ready(function () {
         "ajax": {
             "type"   : "GET",
             "url"    : API_BASE + "/employees",
+            "headers": {
+                Authorization: 'Bearer ' + apiToken
+            },
             "dataSrc": function (json) {
                 var data = new Array();
                 for(var i=0;i< json.length; i++){
